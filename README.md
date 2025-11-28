@@ -46,6 +46,12 @@ docker run -d \
 |--------|------|--------|
 | `PORT` | 服务监听端口 | `3000` (本地) / `7860` (Docker) |
 | `ADMIN_KEY` | Web 控制台管理员密码 | `admin123` |
+| `REGISTER_SERVICE_URL` | 注册服务 URL 前缀 | `http://localhost:5000` |
+| `REGISTER_ADMIN_KEY` | 注册服务管理员密钥 | `sk-admin-token` |
+| `ACCOUNT_LIFETIME` | 账号生命周期 (秒) | `43200` (12小时) |
+| `REFRESH_BEFORE_EXPIRY` | 提前刷新时间 (秒) | `3600` (1小时) |
+| `REFRESH_BATCH_SIZE` | 刷新队列批量大小 | `1` |
+| `MAX_RETRIES` | 最大重试次数 | `10` |
 | `PROXY_URL` | 上游代理地址 (例如 `http://127.0.0.1:7890`) | 无 |
 | `LOG_LEVEL` | 日志级别 | `INFO` |
 
