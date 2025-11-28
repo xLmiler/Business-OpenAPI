@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Business Gemini OpenAPI 兼容服务
-整合JWT获取和聊天功能，提供OpenAPI接口
-支持多账号轮询、自动冷却、故障转移和自动刷新
-"""
-
 import os
 import re
 import json
@@ -32,6 +24,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ==================== 全局配置 ====================
 CONFIG = {
+    #开放端口
+    "port": os.getenv("PORT", "3000"),
+    
     # 管理员密钥（优先从环境变量读取）
     "admin_key": os.getenv("ADMIN_KEY", "admin123"),
     
@@ -1623,7 +1618,7 @@ def main():
     logger.info("  GET  /                    - 管理面板")
     logger.info("=" * 60)
     
-    app.run(host='0.0.0.0', port=8000, debug=False)
+    app.run(host='0.0.0.0', port=CONFIG.PORT, debug=False)
 
 
 if __name__ == '__main__':
