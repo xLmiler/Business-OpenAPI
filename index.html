@@ -12,18 +12,14 @@
         rel="stylesheet">
     <style>
         :root {
-            /* 默认深海蓝调色盘 (Ocean) */
             --bg-gradient: radial-gradient(at 0% 0%, #0f172a 0, transparent 50%), radial-gradient(at 50% 0%, #1e1b4b 0, transparent 50%), radial-gradient(at 100% 0%, #312e81 0, transparent 50%);
             --bg-color: #020617;
-
             --glass-bg: rgba(15, 23, 42, 0.6);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-highlight: rgba(255, 255, 255, 0.05);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-
             --primary: #38bdf8;
             --primary-glow: rgba(56, 189, 248, 0.3);
             --success: #4ade80;
@@ -32,21 +28,20 @@
             --info-glow: rgba(96, 165, 250, 0.2);
             --warning: #fbbf24;
             --danger: #f87171;
-
             --radius: 16px;
             --font-main: 'Plus Jakarta Sans', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
         [data-theme="cyber"] {
-            /* 赛博紫调色盘 */
             --bg-gradient: radial-gradient(circle at top left, #2e1065, #0f172a);
             --bg-color: #09090b;
-            --glass-bg: rgba(24, 24, 27, 0.7);
+            --glass-bg: rgba(24, 24, 27, 0.85);
             --primary: #d8b4fe;
             --primary-glow: rgba(216, 180, 254, 0.3);
             --info: #818cf8;
             --text-main: #fafafa;
+            --success: #34d399;
         }
 
         * {
@@ -69,19 +64,17 @@
             transition: background 0.5s ease;
         }
 
-        /* Glassmorphism Utilities */
+        /* Glass Panel */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-top: 1px solid var(--glass-highlight);
-            border-left: 1px solid var(--glass-highlight);
-            box-shadow: var(--glass-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+            box-shadow: var(--glass-shadow);
             border-radius: var(--radius);
         }
 
-        /* Layout */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -125,7 +118,6 @@
             align-items: center;
         }
 
-        /* Status Pulse */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -148,7 +140,7 @@
             animation: pulse 2s infinite;
         }
 
-        /* Login & Auth */
+        /* Auth */
         .auth-wrapper {
             position: fixed;
             inset: 0;
@@ -168,7 +160,7 @@
             gap: 20px;
         }
 
-        /* Inputs & Buttons */
+        /* Controls */
         .input-group {
             position: relative;
             margin-bottom: 15px;
@@ -178,20 +170,24 @@
             display: block;
             color: var(--text-muted);
             margin-bottom: 8px;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            font-weight: 600;
         }
 
-        input,
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
         textarea {
             width: 100%;
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 8px;
             font-family: inherit;
+            font-size: 13px;
             transition: all 0.3s ease;
         }
 
@@ -203,10 +199,19 @@
             box-shadow: 0 0 15px var(--primary-glow);
         }
 
+        input:disabled,
+        textarea:disabled,
+        textarea[readonly] {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Buttons */
         .btn {
             cursor: pointer;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 8px;
             font-weight: 600;
             font-size: 13px;
@@ -214,24 +219,30 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
+            font-family: var(--font-main);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(1);
         }
 
         .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 5px 10px;
+            font-size: 11px;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), #3b82f6);
             color: #fff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
             box-shadow: 0 4px 15px var(--primary-glow);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-1px);
+        .btn-primary:hover:not(:disabled) {
             filter: brightness(1.1);
+            transform: translateY(-1px);
         }
 
         .btn-ghost {
@@ -240,18 +251,32 @@
             color: var(--text-muted);
         }
 
-        .btn-ghost:hover {
+        .btn-ghost:hover:not(:disabled) {
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-main);
             border-color: var(--text-muted);
         }
 
-        .btn-icon {
-            width: 32px;
-            height: 32px;
-            padding: 0;
-            border-radius: 8px;
-            font-size: 16px;
+        .btn-success {
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: rgba(74, 222, 128, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            background: rgba(251, 191, 36, 0.2);
+            transform: translateY(-1px);
         }
 
         .btn-danger {
@@ -260,7 +285,7 @@
             border: 1px solid rgba(248, 113, 113, 0.2);
         }
 
-        .btn-danger:hover {
+        .btn-danger:hover:not(:disabled) {
             background: rgba(248, 113, 113, 0.2);
             transform: translateY(-1px);
         }
@@ -271,21 +296,79 @@
             border: 1px solid rgba(96, 165, 250, 0.2);
         }
 
-        .btn-info:hover {
+        .btn-info:hover:not(:disabled) {
             background: rgba(96, 165, 250, 0.2);
             transform: translateY(-1px);
         }
 
-        /* Stats Grid */
+        .btn-icon {
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        /* Theme Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 34px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(18px);
+        }
+
+        input:disabled+.slider {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* Stats */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
             margin-bottom: 30px;
         }
 
         .stat-card {
-            padding: 20px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             gap: 5px;
@@ -299,12 +382,12 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: linear-gradient(90deg, var(--primary), transparent);
         }
 
         .stat-value {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 700;
             color: var(--text-main);
             font-family: var(--font-mono);
@@ -312,7 +395,7 @@
 
         .stat-label {
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 11px;
         }
 
         /* Tabs */
@@ -321,22 +404,20 @@
             gap: 20px;
             border-bottom: 1px solid var(--glass-border);
             margin-bottom: 25px;
-            padding: 0 10px;
-            overflow-x: auto;
-            scrollbar-width: none;
+            padding: 0 5px;
         }
 
         .tab-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            padding: 12px 0;
+            padding: 12px 5px;
             font-size: 14px;
             cursor: pointer;
             position: relative;
             opacity: 0.7;
             transition: all 0.3s;
-            white-space: nowrap;
+            font-weight: 500;
         }
 
         .tab-btn.active {
@@ -353,12 +434,12 @@
             width: 100%;
             height: 2px;
             background: var(--primary);
-            box-shadow: 0 -2px 10px var(--primary);
+            box-shadow: 0 -2px 8px var(--primary);
         }
 
         .tab-panel {
             display: none;
-            animation: fadeUp 0.4s ease;
+            animation: fadeUp 0.3s ease;
         }
 
         .tab-panel.active {
@@ -370,6 +451,7 @@
             overflow-x: auto;
             margin-top: 15px;
             border-radius: 8px;
+            border: 1px solid var(--glass-border);
         }
 
         table {
@@ -380,19 +462,20 @@
 
         th {
             text-align: left;
-            padding: 16px;
+            padding: 14px;
             color: var(--text-muted);
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.15);
             border-bottom: 1px solid var(--glass-border);
         }
 
         td {
-            padding: 16px;
+            padding: 12px 14px;
             border-bottom: 1px solid var(--glass-border);
             color: var(--text-main);
+            font-size: 13px;
         }
 
         tr:last-child td {
@@ -400,52 +483,117 @@
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         code {
             font-family: var(--font-mono);
-            font-size: 12px;
+            font-size: 11px;
             background: rgba(0, 0, 0, 0.3);
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 4px;
             border: 1px solid var(--glass-border);
             color: var(--primary);
         }
 
-        /* Badges */
         .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 10px;
             font-weight: 600;
             border: 1px solid transparent;
             display: inline-block;
+            vertical-align: middle;
         }
 
         .badge-success {
-            background: rgba(74, 222, 128, 0.1);
+            background: rgba(74, 222, 128, 0.15);
             color: var(--success);
-            border-color: rgba(74, 222, 128, 0.2);
+            border-color: rgba(74, 222, 128, 0.3);
         }
 
         .badge-warning {
-            background: rgba(251, 191, 36, 0.1);
+            background: rgba(251, 191, 36, 0.15);
             color: var(--warning);
-            border-color: rgba(251, 191, 36, 0.2);
+            border-color: rgba(251, 191, 36, 0.3);
         }
 
         .badge-danger {
-            background: rgba(248, 113, 113, 0.1);
+            background: rgba(248, 113, 113, 0.15);
             color: var(--danger);
-            border-color: rgba(248, 113, 113, 0.2);
+            border-color: rgba(248, 113, 113, 0.3);
         }
 
         .badge-info {
-            background: rgba(96, 165, 250, 0.1);
+            background: rgba(96, 165, 250, 0.15);
             color: var(--info);
-            border-color: rgba(96, 165, 250, 0.2);
-            animation: pulse 2s infinite;
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .badge-muted {
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-muted);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
+        /* Config Sections */
+        .config-section {
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .config-section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .config-section-title h4 {
+            font-size: 14px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .form-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        /* Checkbox custom */
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--primary);
         }
 
         /* Modals */
@@ -453,7 +601,7 @@
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             z-index: 100;
             display: none;
             place-items: center;
@@ -469,12 +617,10 @@
 
         .modal {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             padding: 30px;
             transform: translateY(20px);
             transition: transform 0.3s;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         .modal-overlay.open .modal {
@@ -489,9 +635,9 @@
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--text-main);
         }
 
         /* Toast */
@@ -500,7 +646,7 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%) translateY(-50px);
-            padding: 12px 20px;
+            padding: 10px 20px;
             border-radius: 30px;
             z-index: 300;
             display: flex;
@@ -521,43 +667,30 @@
         .toast-success {
             background: var(--success);
             color: #000;
-            box-shadow: 0 10px 30px var(--success-glow);
+            box-shadow: 0 10px 30px -5px var(--success-glow);
         }
 
         .toast-error {
             background: var(--danger);
             color: #fff;
-            box-shadow: 0 5px 15px rgba(248, 113, 113, 0.3);
+            box-shadow: 0 5px 15px -5px rgba(248, 113, 113, 0.5);
         }
 
-        /* Detail View */
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 8px;
-        }
-
-        .detail-row span:first-child {
-            color: var(--text-muted);
-            max-width: 120px;
-        }
-
-        .detail-row span:last-child {
-            font-family: var(--font-mono);
-            text-align: right;
-            word-break: break-all;
-            color: var(--text-main);
-        }
-
-        /* Pagination */
         .pagination {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-top: 20px;
             align-items: center;
+        }
+
+        .version-info {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
         }
 
         @keyframes pulse {
@@ -600,63 +733,43 @@
             animation: spin 1s linear infinite;
             display: inline-block;
         }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .header-actions {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .stat-value {
-                font-size: 24px;
-            }
-
-            .actions-cell {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 5px;
-            }
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- Login Overlay -->
+    <!-- Login -->
     <div id="loginSection" class="auth-wrapper">
         <div class="glass-panel auth-card">
             <div style="text-align: center; margin-bottom: 20px;">
                 <div class="logo-icon" style="margin: 0 auto 15px auto; width: 48px; height: 48px; font-size: 24px;">G
                 </div>
-                <h2 style="font-weight: 700; font-size: 20px;">服务登录</h2>
-                <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">Business Gemini API 服务</p>
+                <h2 style="font-weight: 700; font-size: 20px;">Business Gemini</h2>
+                <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">API 服务控制台</p>
             </div>
             <div class="input-group">
                 <label>管理员密钥</label>
                 <div style="position: relative;">
-                    <input type="password" id="loginPassword" placeholder="••••••••">
+                    <input type="password" id="loginPassword" placeholder="Enter Admin Key..."
+                        onkeypress="if(event.key==='Enter')handleLogin()">
                     <button onclick="togglePwd()"
                         style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">👁️</button>
                 </div>
             </div>
             <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="handleLogin()">进入控制台
-                <span style="font-family: sans-serif;">→</span></button>
+                →</button>
         </div>
     </div>
 
-    <!-- Main Dashboard -->
+    <!-- Dashboard -->
     <div id="mainDashboard" style="display: none;">
         <header class="glass-panel header">
             <div class="logo">
                 <div class="logo-icon">G</div>
-                <span>Business Gemini <span
-                        style="color: var(--text-muted); font-weight: 400; font-size: 0.9em;">OpenAPI</span></span>
+                <span style="display: flex; flex-direction: column; line-height: 1.2;">
+                    <span>Business Gemini</span>
+                    <span style="color: var(--text-muted); font-weight: 400; font-size: 0.8em;">Service Console</span>
+                </span>
             </div>
             <div class="header-actions">
                 <div class="glass-panel status-badge" id="statusBadge">
@@ -669,7 +782,7 @@
         </header>
 
         <div class="container">
-            <!-- Stats Cards -->
+            <!-- Stats Row -->
             <div class="stats-grid">
                 <div class="glass-panel stat-card">
                     <span class="stat-value" id="totalAccounts">-</span>
@@ -684,27 +797,45 @@
                     <span class="stat-label">正在更新</span>
                 </div>
                 <div class="glass-panel stat-card">
+                    <span class="stat-value" style="color: var(--warning);" id="cooldownAccounts">-</span>
+                    <span class="stat-label">冷却中</span>
+                </div>
+                <div class="glass-panel stat-card">
                     <span class="stat-value" style="color: var(--danger);" id="disabledAccounts">-</span>
-                    <span class="stat-label">冷却/禁用</span>
+                    <span class="stat-label">已禁用</span>
+                </div>
+                <div class="glass-panel stat-card">
+                    <span class="stat-value" style="color: var(--text-muted);" id="excludedAccounts">-</span>
+                    <span class="stat-label">排除批刷</span>
                 </div>
             </div>
 
-            <!-- Navigation -->
+            <!-- Tabs -->
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('accounts')">账号资源</button>
+                <button class="tab-btn active" onclick="switchTab('accounts')">账号池资源</button>
                 <button class="tab-btn" onclick="switchTab('settings')">系统设置</button>
             </div>
 
-            <!-- Accounts Panel -->
+            <!-- Accounts View -->
             <div id="accounts" class="tab-panel active">
                 <div class="glass-panel" style="padding: 20px;">
                     <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-                        <h3 style="font-weight: 600;">账号列表</h3>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn btn-info btn-sm" onclick="refreshAll()">🔄 全部刷新</button>
-                            <button class="btn btn-primary btn-sm" onclick="openModal('addAccountModal')"><span>+</span>
-                                新增账号</button>
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <h3 style="font-weight: 600; font-size: 16px;">账号列表</h3>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-primary btn-sm" id="createNewBtn" onclick="createAccount()">
+                                ✨ 注册新号
+                            </button>
+                            <button class="btn btn-ghost btn-sm" onclick="openModal('addAccountModal')">
+                                ➕ 导入账号
+                            </button>
+                            <div style="width: 1px; background: var(--glass-border); margin: 0 5px;"></div>
+                            <button class="btn btn-warning btn-sm" onclick="refreshInvalid()">
+                                🔄 刷新无效
+                            </button>
+                            <button class="btn btn-info btn-sm" onclick="refreshAll()">
+                                🔄 全部刷新
+                            </button>
                         </div>
                     </div>
 
@@ -712,58 +843,121 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>邮箱 / Team ID</th>
-                                    <th>状态</th>
-                                    <th>冷却/进度</th>
-                                    <th>更新时间</th>
-                                    <th style="text-align: right;">操作</th>
+                                    <th width="5%">ID</th>
+                                    <th width="25%">邮箱 / Team ID</th>
+                                    <th width="10%">状态</th>
+                                    <th width="15%">冷却 / 进度</th>
+                                    <th width="10%">Reqs</th>
+                                    <th width="15%">更新时间</th>
+                                    <th width="5%" align="center">排除</th>
+                                    <th width="15%" style="text-align: right;">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="accountsTable">
-                                <!-- JS render -->
+                                <!-- JS Rendered -->
                             </tbody>
                         </table>
                     </div>
-
                     <div class="pagination" id="pagination"></div>
                 </div>
             </div>
 
-            <!-- Settings Panel -->
+            <!-- Settings View -->
             <div id="settings" class="tab-panel">
-                <div class="glass-panel" style="padding: 30px;">
-                    <div style="display: grid; gap: 30px;">
+                <div class="glass-panel" style="padding: 25px;">
+                    <div style="display: grid; gap: 25px;">
 
-                        <div>
-                            <h3 style="margin-bottom: 15px; color: var(--primary);">可用模型</h3>
-                            <div id="modelsList" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                        <!-- 策略设置 -->
+                        <div class="config-section">
+                            <div class="config-section-title">
+                                <h4>⚡ 性能与策略配置</h4>
+                                <button class="btn btn-primary btn-sm" onclick="savePerfSettings()">保存设置</button>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-item">
+                                    <label>最大并发刷新数</label>
+                                    <input type="number" id="set_max_concurrent" min="1" max="50" placeholder="4">
+                                    <span style="font-size: 10px; color: var(--text-muted);">并发刷新线程数量 (1-20)</span>
+                                </div>
+                                <div class="form-item">
+                                    <label>单账号请求限制</label>
+                                    <input type="number" id="set_reqs_per_account" min="1" placeholder="5">
+                                    <span style="font-size: 10px; color: var(--text-muted);">请求N次后切换下一个账号</span>
+                                </div>
+                                <div class="form-item">
+                                    <label>刷新最大重试</label>
+                                    <input type="number" id="set_refresh_retries" min="0" max="10" placeholder="2">
+                                    <span style="font-size: 10px; color: var(--text-muted);">刷新失败重试次数，由于自动删除</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="border-top: 1px solid var(--glass-border); padding-top: 20px;">
-                            <h3 style="margin-bottom: 15px; display: flex; justify-content: space-between;">
-                                <span>配置管理</span>
-                                <div style="display: flex; gap: 10px;">
-                                    <button class="btn btn-ghost btn-sm" onclick="refreshConfig()">刷新预览</button>
-                                    <button class="btn btn-primary btn-sm" onclick="importConfig()">导入账号JSON</button>
+                        <!-- 自动化设置 -->
+                        <div class="config-section">
+                            <div class="config-section-title">
+                                <h4>🤖 自动化账号管理</h4>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-item-row"
+                                    style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">自动创建新账号
+                                        </div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">启用后将定期调用注册服务创建新号</div>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="autoCreateToggle" onchange="toggleAutoCreate(this)">
+                                        <span class="slider"></span>
+                                    </label>
                                 </div>
-                            </h3>
-                            <div class="input-group">
-                                <textarea id="configJson" rows="12"
-                                    style="font-family: var(--font-mono); font-size: 12px;"
-                                    placeholder="此处可导出查看配置，或粘贴 account.json 进行导入..."></textarea>
+                                <div class="form-item">
+                                    <label>创建间隔 (秒)</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <input type="number" id="set_auto_interval" min="60" placeholder="3600"
+                                            style="flex:1;">
+                                        <button class="btn btn-ghost btn-sm" onclick="saveAutoInterval()">更新间隔</button>
+                                    </div>
+                                    <span style="font-size: 10px; color: var(--text-muted);">默认 3600 秒 (1小时)</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div style="border-top: 1px solid var(--glass-border); padding-top: 20px;">
-                            <h3>API 端点信息</h3>
-                            <div style="display: grid; gap: 10px; margin-top: 10px;">
-                                <div class="glass-panel"
-                                    style="padding: 10px; font-family: var(--font-mono); font-size: 12px; display: flex; justify-content: space-between;">
-                                    <span>Base URL</span>
-                                    <span style="color: var(--primary);" id="apiUrl">...</span>
+                        <!-- 配置管理 -->
+                        <div class="config-section">
+                            <div class="config-section-title">
+                                <h4>📋 配置管理 (JSON)</h4>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="version-info" id="configVersion">v-</span>
+                                    <button class="btn btn-success btn-sm" onclick="downloadConfig()">💾 下载</button>
+                                    <button class="btn btn-ghost btn-sm" id="editConfigBtn"
+                                        onclick="toggleConfigEdit()">✏️ 修改</button>
+                                    <button class="btn btn-primary btn-sm" id="importConfigBtn" onclick="importConfig()"
+                                        disabled>📥 导入</button>
                                 </div>
                             </div>
+                            <div class="input-group" style="margin-bottom: 0;">
+                                <textarea id="configJson" rows="10"
+                                    style="font-family: var(--font-mono); font-size: 11px;" readonly
+                                    placeholder="Loading..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 排除列表 -->
+                        <div class="config-section">
+                            <div class="config-section-title">
+                                <h4>🚫 批量刷新排除列表</h4>
+                                <button class="btn btn-ghost btn-sm" onclick="loadExcludeList()">刷新列表</button>
+                            </div>
+                            <div id="excludeList"
+                                style="max-height: 150px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px;">
+                                <!-- Render -->
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <span class="badge badge-muted" style="font-weight: normal;">API Base: <span id="apiUrl"
+                                    class="text-primary">...</span></span>
+                            <div id="modelsList" style="display: flex; gap: 5px;"></div>
                         </div>
 
                     </div>
@@ -773,29 +967,28 @@
     </div>
 
     <!-- Modals -->
-    <!-- Add Account Modal -->
     <div class="modal-overlay" id="addAccountModal">
         <div class="glass-panel modal">
             <div class="modal-header">
-                <div class="modal-title">添加新账号</div>
+                <div class="modal-title">导入现有账号</div>
                 <button class="btn btn-ghost btn-icon" onclick="closeModal('addAccountModal')">✕</button>
             </div>
-            <div style="display: grid; gap: 15px;">
-                <div class="input-group">
-                    <label>Email (必填，用于刷新)</label>
-                    <input type="text" id="addEmail" placeholder="xxx@799922.xyz" required>
-                    <small style="color: var(--text-muted); font-size: 11px;">邮箱域名必须在注册服务中已配置</small>
-                </div>
+            <div style="display: grid; gap: 12px;">
+                <div class="input-group"><label>Email</label><input type="text" id="addEmail"
+                        placeholder="xxx@799922.xyz"></div>
                 <div class="input-group"><label>Team ID</label><input type="text" id="addTeamId"></div>
                 <div class="input-group"><label>__Secure-C_SES</label><input type="text" id="addSecureCses"></div>
                 <div class="input-group"><label>__Host-C_OSES</label><input type="text" id="addHostCoses"></div>
                 <div class="input-group"><label>CSESIDX</label><input type="text" id="addCsesidx"></div>
-                <button class="btn btn-primary" style="margin-top: 10px;" onclick="addAccount()">确认添加</button>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="addExcludeBatch">
+                    <label for="addExcludeBatch" style="font-size: 12px; color: var(--text-muted);">排除批量刷新</label>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 10px;" onclick="addAccount()">导入确认</button>
             </div>
         </div>
     </div>
 
-    <!-- Detail Modal -->
     <div class="modal-overlay" id="detailModal">
         <div class="glass-panel modal">
             <div class="modal-header">
@@ -803,6 +996,19 @@
                 <button class="btn btn-ghost btn-icon" onclick="closeModal('detailModal')">✕</button>
             </div>
             <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="confirmRefreshModal">
+        <div class="glass-panel modal" style="max-width: 400px; text-align: center;">
+            <div style="font-size: 40px; margin-bottom: 15px;">⚠️</div>
+            <h3 style="margin-bottom: 10px; color: var(--text-main);">JWT 测试失败</h3>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5;"
+                id="confirmRefreshMessage"></p>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button class="btn btn-ghost" onclick="closeModal('confirmRefreshModal')">取消</button>
+                <button class="btn btn-primary" onclick="confirmRefresh()">立即刷新</button>
+            </div>
         </div>
     </div>
 
@@ -814,7 +1020,11 @@
         let currentPage = 1;
         let totalPages = 1;
         let accountsCache = [];
+        let fullAccountsCache = [];
         let refreshTicker = null;
+        let lastDataVersion = 0;
+        let configEditMode = false;
+        let pendingRefreshId = null;
 
         // Init
         document.addEventListener('DOMContentLoaded', () => {
@@ -824,64 +1034,55 @@
             } else {
                 document.getElementById('loginSection').style.display = 'grid';
             }
-            renderModelsBox();
+
+            // Render models badge
+            const models = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro-preview"];
+            const c = document.getElementById('modelsList');
+            models.forEach(m => {
+                const s = document.createElement('span'); s.className = 'badge badge-success'; s.textContent = m; c.appendChild(s);
+            });
         });
 
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme');
-            const next = current === 'ocean' ? 'cyber' : 'ocean';
-            document.documentElement.setAttribute('data-theme', next);
+            document.documentElement.setAttribute('data-theme', current === 'ocean' ? 'cyber' : 'ocean');
         }
-
         function togglePwd() {
             const x = document.getElementById("loginPassword");
             x.type = (x.type === "password") ? "text" : "password";
         }
 
+        /* Auth */
         async function handleLogin() {
             const pwd = document.getElementById('loginPassword').value;
             if (!pwd) return showToast('请输入密钥', 'error');
-
             try {
                 const res = await fetch(`${API_BASE}/api/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: pwd })
+                    method: 'POST', body: JSON.stringify({ password: pwd }), headers: { 'Content-Type': 'application/json' }
                 });
-
                 if (res.ok) {
-                    adminKey = pwd;
-                    localStorage.setItem('admin_key', pwd);
-                    showDashboard();
-                    showToast('登录成功', 'success');
-                } else {
-                    showToast('密钥无效', 'error');
-                }
-            } catch (e) {
-                showToast('网络错误', 'error');
-            }
+                    adminKey = pwd; localStorage.setItem('admin_key', pwd);
+                    showDashboard(); showToast('登录成功', 'success');
+                } else showToast('密钥无效', 'error');
+            } catch (e) { showToast('网络错误', 'error'); }
         }
+        function logout() { adminKey = ''; localStorage.removeItem('admin_key'); location.reload(); }
 
-        function logout() {
-            adminKey = '';
-            localStorage.removeItem('admin_key');
-            window.location.reload();
-        }
-
-        function showDashboard() {
+        /* Dashboard Logic */
+        async function showDashboard() {
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('mainDashboard').style.display = 'block';
+
+            // Load Settings First
+            await loadSettings();
+
             loadAccounts(1);
-            refreshTicker = setInterval(refreshData, 5000); // 5s polling for status updates
+            refreshTicker = setInterval(refreshData, 4000);
             checkStatus();
         }
 
         async function apiCall(endpoint, options = {}) {
-            const headers = {
-                'Content-Type': 'application/json',
-                'X-Admin-Key': adminKey,
-                ...options.headers
-            };
+            const headers = { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey, ...options.headers };
             const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
             if (res.status === 401) { logout(); throw new Error('Auth failed'); }
             return res;
@@ -889,155 +1090,249 @@
 
         async function checkStatus() {
             try {
-                await apiCall('/api/status');
+                const res = await apiCall('/api/status');
+                const data = await res.json();
+
                 document.getElementById('statusText').textContent = "System Online";
                 document.querySelector('.status-dot').style.color = 'var(--success)';
+
+                if (data.accounts) {
+                    document.getElementById('totalAccounts').textContent = data.accounts.total || 0;
+                    document.getElementById('availableAccounts').textContent = data.accounts.available || 0;
+                    document.getElementById('updatingAccounts').textContent = data.accounts.updating || 0;
+                    document.getElementById('cooldownAccounts').textContent = data.accounts.cooldown || 0;
+                    document.getElementById('disabledAccounts').textContent = data.accounts.disabled || 0;
+                    document.getElementById('excludedAccounts').textContent = data.accounts.excluded_from_batch || 0;
+                }
+
+                if (data.data_version?.version !== lastDataVersion) {
+                    lastDataVersion = data.data_version.version;
+                    syncConfigDisplay();
+                }
             } catch (e) {
                 document.getElementById('statusText').textContent = "Offline";
                 document.querySelector('.status-dot').style.color = 'var(--danger)';
             }
         }
 
-        function refreshData() {
-            // Only refresh active tab if it's accounts to check status updates
-            if (document.getElementById('accounts').classList.contains('active')) {
-                loadAccounts(currentPage);
+        async function refreshData() {
+            await checkStatus();
+            if (document.getElementById('accounts').classList.contains('active')) loadAccounts(currentPage);
+        }
+
+        /* Settings & Config */
+        async function loadSettings() {
+            try {
+                const res = await apiCall('/api/config');
+                const cfg = await res.json();
+
+                // Fill Inputs
+                document.getElementById('set_max_concurrent').value = cfg.max_concurrent_refresh || 4;
+                document.getElementById('set_reqs_per_account').value = cfg.requests_per_account || 5;
+                document.getElementById('set_refresh_retries').value = cfg.max_refresh_retries || 2;
+                document.getElementById('set_auto_interval').value = cfg.auto_create_interval || 3600;
+
+                // Toggle Switch
+                document.getElementById('autoCreateToggle').checked = cfg.auto_create_account || false;
+
+            } catch (e) { console.error("Failed to load config", e); }
+        }
+
+        async function savePerfSettings() {
+            const body = {
+                max_concurrent_refresh: parseInt(document.getElementById('set_max_concurrent').value),
+                requests_per_account: parseInt(document.getElementById('set_reqs_per_account').value),
+                max_refresh_retries: parseInt(document.getElementById('set_refresh_retries').value)
+            };
+            try {
+                await apiCall('/api/config', { method: 'PUT', body: JSON.stringify(body) });
+                showToast('性能策略配置已保存', 'success');
+            } catch (e) { showToast('保存失败', 'error'); }
+        }
+
+        async function toggleAutoCreate(el) {
+            try {
+                await apiCall('/api/config', { method: 'PUT', body: JSON.stringify({ auto_create_account: el.checked }) });
+                showToast(el.checked ? '已开启自动创建账号' : '已关闭自动创建账号', 'success');
+            } catch (e) {
+                el.checked = !el.checked; // revert
+                showToast('设置失败', 'error');
             }
         }
 
-        /* Account Management */
+        async function saveAutoInterval() {
+            const val = parseInt(document.getElementById('set_auto_interval').value);
+            if (val < 60) return showToast('间隔不能少于60秒', 'error');
+            try {
+                await apiCall('/api/config', { method: 'PUT', body: JSON.stringify({ auto_create_interval: val }) });
+                showToast('自动创建间隔已更新', 'success');
+            } catch (e) { showToast('更新失败', 'error'); }
+        }
+
+        /* Config JSON */
+        async function syncConfigDisplay() {
+            if (configEditMode) return;
+            try {
+                const res = await apiCall('/api/accounts/export');
+                const data = await res.json();
+                document.getElementById('configJson').value = JSON.stringify(data, null, 2);
+                document.getElementById('configVersion').textContent = `v-${data.data_version?.version}`;
+                fullAccountsCache = data.accounts || [];
+                if (document.getElementById('settings').classList.contains('active')) loadExcludeList();
+            } catch (e) { }
+        }
+
+        function toggleConfigEdit() {
+            const ta = document.getElementById('configJson');
+            const btn = document.getElementById('editConfigBtn');
+            configEditMode = !configEditMode;
+            if (configEditMode) {
+                ta.removeAttribute('readonly');
+                btn.innerHTML = '🔒 锁定'; btn.classList.replace('btn-ghost', 'btn-warning');
+                document.getElementById('importConfigBtn').disabled = false;
+            } else {
+                ta.setAttribute('readonly', true);
+                btn.innerHTML = '✏️ 修改'; btn.classList.replace('btn-warning', 'btn-ghost');
+                document.getElementById('importConfigBtn').disabled = true;
+                syncConfigDisplay();
+            }
+        }
+
+        async function importConfig() {
+            try {
+                const json = JSON.parse(document.getElementById('configJson').value);
+                const accounts = json.accounts || json;
+                await apiCall('/api/accounts/import', { method: 'POST', body: JSON.stringify({ accounts }) });
+                showToast('导入成功', 'success');
+                configEditMode = true; toggleConfigEdit();
+                loadAccounts(1);
+            } catch (e) { showToast('JSON格式错误', 'error'); }
+        }
+
+        function downloadConfig() {
+            const content = document.getElementById('configJson').value;
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `gemini_config_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
+        /* Accounts Table */
         async function loadAccounts(page) {
             try {
                 const res = await apiCall(`/api/accounts?page=${page}`);
                 const data = await res.json();
                 accountsCache = data.accounts;
-                currentPage = data.page;
-                totalPages = data.total_pages;
-
-                renderStats(); // Recalculate stats based on current batch + global context if available
+                currentPage = data.page; totalPages = data.total_pages;
                 updateTable();
-            } catch (e) { console.error(e); }
+                if (data.data_version?.version !== lastDataVersion) {
+                    lastDataVersion = data.data_version.version; syncConfigDisplay();
+                }
+            } catch (e) { }
         }
 
         function updateTable() {
             const tbody = document.getElementById('accountsTable');
             tbody.innerHTML = '';
-
             accountsCache.forEach(acc => {
                 const tr = document.createElement('tr');
 
-                // Status Logic
-                let statusBadge;
-                if (acc.refresh_in_progress) {
-                    statusBadge = `<span class="badge badge-info"><span class="spin">↻</span> 更新中</span>`;
-                } else if (acc.available && !acc.cooldown_remaining) {
-                    statusBadge = `<span class="badge badge-success">可用</span>`;
-                } else if (acc.cooldown_remaining > 0) {
-                    statusBadge = `<span class="badge badge-warning">冷却</span>`;
-                } else {
-                    statusBadge = `<span class="badge badge-danger">禁用</span>`;
-                }
+                // Status Badge
+                let statusHtml = '';
+                if (acc.refresh_in_progress) statusHtml = `<span class="badge badge-info"><span class="spin">↻</span> 更新中</span>`;
+                else if (acc.last_refresh_failed) statusHtml = `<span class="badge badge-danger">刷新失败</span>`;
+                else if (acc.available && !acc.cooldown_remaining) statusHtml = `<span class="badge badge-success">可用</span>`;
+                else if (acc.cooldown_remaining > 0) statusHtml = `<span class="badge badge-warning">冷却中</span>`;
+                else statusHtml = `<span class="badge badge-danger">禁用</span>`;
 
-                // Cooldown / Info
-                let infoText = '-';
-                if (acc.refresh_in_progress) {
-                    infoText = '<span style="color:var(--info)">等待注册服务...</span>';
-                } else if (acc.cooldown_remaining > 0) {
-                    infoText = `<span style="color:var(--warning)">${formatTime(acc.cooldown_remaining)}</span><br><span style="color:var(--text-muted);font-size:10px;">${acc.cooldown_reason?.substring(0, 15)}...</span>`;
-                }
+                // Info text
+                let info = '-';
+                if (acc.refresh_in_progress) info = `<small style="color:var(--info)">Attempt: ${acc.refresh_retry_count}</small>`;
+                else if (acc.cooldown_remaining > 0) info = `<span style="color:var(--warning)">${formatTime(acc.cooldown_remaining)}</span>`;
+                else if (acc.last_refresh_failed) info = `<span style="color:var(--danger)">Failed</span>`;
 
-                // Update Time
-                const updateTime = acc.updated_at ? new Date(acc.updated_at).toLocaleTimeString() : '-';
-
-                // Toggle/Stop Button Logic
-                // If updating, Stop button (red). If available, Pause button. If disabled, Play button.
-                let actionBtn = '';
-                if (acc.refresh_in_progress) {
-                    actionBtn = `<button class="btn btn-ghost btn-icon" style="color:var(--danger)" onclick="toggleAcc(${acc.id})" title="强制停止更新/禁用">⏹</button>`;
-                } else {
-                    actionBtn = `<button class="btn btn-ghost btn-icon" style="color: ${acc.available ? 'var(--warning)' : 'var(--success)'}" onclick="toggleAcc(${acc.id})" title="${acc.available ? '禁用' : '启用'}">${acc.available ? '⏸' : '▶'}</button>`;
-                }
+                const btnState = acc.available ?
+                    `<button class="btn btn-ghost btn-icon" onclick="toggleAcc(${acc.id})" title="禁用" style="color:var(--warning)">⏸</button>` :
+                    `<button class="btn btn-ghost btn-icon" onclick="toggleAcc(${acc.id})" title="启用" style="color:var(--success)">▶</button>`;
 
                 tr.innerHTML = `
                     <td><span style="color:var(--text-muted)">${acc.id}</span></td>
                     <td>
-                        <div>${acc.email || 'Unknown'}</div>
-                        <code style="font-size:10px; opacity:0.7">${acc.team_id?.substring(0, 8)}...</code>
+                        <div style="font-weight:500">${acc.email}</div>
+                        <code style="opacity:0.6">${(acc.team_id || '').substring(0, 8)}...</code>
                     </td>
-                    <td>${statusBadge}</td>
-                    <td>${infoText}</td>
-                    <td style="color:var(--text-muted); font-size:12px;">${updateTime}</td>
-                    <td style="text-align: right;">
-                        <div style="display: flex; gap: 5px; justify-content: flex-end;">
-                            <button class="btn btn-ghost btn-icon" onclick="viewDetail(${acc.id})" title="详情">👁️</button>
-                            <button class="btn btn-ghost btn-icon" onclick="refreshAcc(${acc.id})" title="刷新数据" ${acc.refresh_in_progress ? 'disabled' : ''}>🔄</button>
-                            <button class="btn btn-ghost btn-icon" onclick="testAcc(${acc.id})" title="测试JWT">⚡</button>
-                            ${actionBtn}
-                            <button class="btn btn-ghost btn-icon" style="color: var(--danger)" onclick="delAcc(${acc.id})" title="删除">🗑</button>
+                    <td>${statusHtml}</td>
+                    <td>${info}</td>
+                    <td style="color:var(--text-muted)">${acc.request_count || 0}</td>
+                    <td style="font-size:11px;color:var(--text-muted)">${acc.updated_at ? new Date(acc.updated_at).toLocaleTimeString() : '-'}</td>
+                    <td align="center">
+                        <div class="checkbox-wrapper" style="justify-content:center">
+                            <input type="checkbox" ${acc.exclude_from_batch_refresh ? 'checked' : ''} onchange="toggleExclude(${acc.id}, this.checked)">
+                        </div>
+                    </td>
+                    <td align="right">
+                        <div style="display:flex; justify-content:flex-end; gap:4px;">
+                            <button class="btn btn-ghost btn-icon" onclick="viewDetail(${acc.id})">👁️</button>
+                            <button class="btn btn-ghost btn-icon" onclick="refreshAcc(${acc.id})" ${acc.refresh_in_progress ? 'disabled' : ''}>🔄</button>
+                            <button class="btn btn-ghost btn-icon" onclick="testAcc(${acc.id})">⚡</button>
+                            ${acc.refresh_in_progress ? `<button class="btn btn-ghost btn-icon" style="color:var(--danger)">⏹</button>` : btnState}
+                            <button class="btn btn-ghost btn-icon" style="color:var(--danger)" onclick="delAcc(${acc.id})">🗑</button>
                         </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            // Pagination
-            const pag = document.getElementById('pagination');
-            pag.innerHTML = `
+            document.getElementById('pagination').innerHTML = `
                 <button class="btn btn-ghost btn-sm" ${currentPage <= 1 ? 'disabled' : ''} onclick="loadAccounts(${currentPage - 1})">Prev</button>
                 <span style="color:var(--text-muted); font-size:12px;">${currentPage} / ${totalPages}</span>
                 <button class="btn btn-ghost btn-sm" ${currentPage >= totalPages ? 'disabled' : ''} onclick="loadAccounts(${currentPage + 1})">Next</button>
             `;
         }
 
-        function renderStats() {
-            // Simple counting from current cache + estimation. Ideally backend provides aggregate route.
-            // For now, we use what counts we can see or fetch global status if needed.
-            apiCall('/api/status').then(res => res.json()).then(data => {
-                const accs = data.accounts || {};
-                // Note: /api/status in backend currently just returns total and available.
-                // We might need to rely on the full list export for granular stats or update backend.
-                // Let's do a quick export fetch for accurate stats as requested.
-                return apiCall('/api/accounts/export');
-            }).then(res => res.json()).then(data => {
-                const all = data.accounts;
-                document.getElementById('totalAccounts').textContent = all.length;
-                document.getElementById('availableAccounts').textContent = all.filter(a => a.available && !a.cooldown_remaining && !a.refresh_in_progress).length;
-                document.getElementById('updatingAccounts').textContent = all.filter(a => a.refresh_in_progress).length;
-                document.getElementById('disabledAccounts').textContent = all.filter(a => !a.available || a.cooldown_remaining > 0).length;
-            });
-        }
-
-        function formatTime(s) {
-            const m = Math.floor(s / 60);
-            const sec = s % 60;
-            return `${m}m ${sec}s`;
-        }
-
-        function formatDuration(s) {
-            if (s <= 0) return "即将过期 / 已过期";
-            const h = Math.floor(s / 3600);
-            const m = Math.floor((s % 3600) / 60);
-            return `${h}小时 ${m}分钟`;
-        }
-
         /* Actions */
-        async function addAccount() {
-            const email = document.getElementById('addEmail').value;
-            if (!email || !email.includes('@')) {
-                showToast('请输入有效的邮箱地址', 'error');
-                return;
+        async function createAccount() {
+            const btn = document.getElementById('createNewBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spin">↻</span> 注册中...';
+            btn.disabled = true;
+
+            try {
+                const res = await apiCall('/api/accounts/create', {
+                    method: 'POST',
+                    body: JSON.stringify({})  // 发送空对象，让后端生成随机用户名
+                });
+                const d = await res.json();
+                if (d.success) {
+                    showToast('新账号注册成功: ' + d.email, 'success');
+                    loadAccounts(currentPage);
+                } else {
+                    showToast('注册失败: ' + (d.error || '未知错误'), 'error');
+                }
+            } catch (e) {
+                console.error(e);
+                showToast('请求超时或出错', 'error');
             }
 
-            const newItem = {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+
+
+        async function addAccount() {
+            const email = document.getElementById('addEmail').value;
+            if (!email) return showToast('邮箱必填', 'error');
+            const body = {
                 email: email,
                 team_id: document.getElementById('addTeamId').value,
                 secure_c_ses: document.getElementById('addSecureCses').value,
                 host_c_oses: document.getElementById('addHostCoses').value,
-                csesidx: document.getElementById('addCsesidx').value
+                csesidx: document.getElementById('addCsesidx').value,
+                exclude_from_batch_refresh: document.getElementById('addExcludeBatch').checked
             };
-            await apiCall('/api/accounts', { method: 'POST', body: JSON.stringify(newItem) });
-            closeModal('addAccountModal');
-            showToast('账号添加成功', 'success');
+            await apiCall('/api/accounts', { method: 'POST', body: JSON.stringify(body) });
+            closeModal('addAccountModal'); showToast('添加成功', 'success');
             loadAccounts(currentPage);
         }
 
@@ -1045,121 +1340,114 @@
             const res = await apiCall(`/api/accounts/${id}/refresh`, { method: 'POST' });
             const d = await res.json();
             if (d.success) showToast('已加入刷新队列', 'success');
-            else showToast(d.error, 'error');
             loadAccounts(currentPage);
         }
 
-        async function refreshAll() {
-            if (!confirm('确定要刷新所有账号吗？这将把它们全部加入队列。')) return;
-            const res = await apiCall(`/api/accounts/refresh-all`, { method: 'POST' });
-            if (res.ok) showToast('全部账号已加入刷新队列', 'success');
+        async function testAcc(id) {
+            showToast('Testing JWT...', 'info');
+            const res = await apiCall(`/api/accounts/${id}/test`);
+            const d = await res.json();
+            if (d.success) {
+                showToast('JWT 有效', 'success');
+                loadAccounts(currentPage);
+            } else {
+                pendingRefreshId = id;
+                document.getElementById('confirmRefreshMessage').innerHTML = `错误: ${d.message}<br>账号已禁用，是否立即尝试刷新修复？`;
+                openModal('confirmRefreshModal');
+                loadAccounts(currentPage);
+            }
+        }
+
+        async function confirmRefresh() {
+            if (pendingRefreshId) await refreshAcc(pendingRefreshId);
+            closeModal('confirmRefreshModal');
+        }
+
+        async function toggleExclude(id, checked) {
+            await apiCall(`/api/accounts/${id}/exclude-batch`, { method: 'POST', body: JSON.stringify({ exclude: checked }) });
             loadAccounts(currentPage);
         }
 
         async function toggleAcc(id) {
-            // This serves as both Toggle Available AND Force Stop Update (by disabling)
             await apiCall(`/api/accounts/${id}/toggle`, { method: 'POST' });
             loadAccounts(currentPage);
         }
 
         async function delAcc(id) {
-            if (!confirm('确认删除?')) return;
+            if (!confirm('确定删除?')) return;
             await apiCall(`/api/accounts/${id}`, { method: 'DELETE' });
-            showToast('已删除', 'success');
             loadAccounts(currentPage);
         }
 
-        async function testAcc(id) {
-            showToast('测试连接中...', 'success');
-            const res = await apiCall(`/api/accounts/${id}/test`);
-            const d = await res.json();
-            if (d.success) showToast('JWT 获取成功', 'success');
-            else showToast('失败: ' + d.message, 'error');
+        async function refreshAll() {
+            if (!confirm('刷新所有未排除的账号?')) return;
+            const res = await apiCall('/api/accounts/refresh-all', { method: 'POST', body: JSON.stringify({ only_invalid: false }) });
+            const d = await res.json(); showToast(d.message, 'success');
+            loadAccounts(currentPage);
         }
 
-        /* Detail View */
+        async function refreshInvalid() {
+            const res = await apiCall('/api/accounts/refresh-all', { method: 'POST', body: JSON.stringify({ only_invalid: true }) });
+            const d = await res.json(); showToast(d.message, 'success');
+            loadAccounts(currentPage);
+        }
+
+        /* Utils */
+        function formatTime(s) {
+            const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+            if (h > 0) return `${h}h ${m}m`;
+            return `${m}m ${sec}s`;
+        }
+
+        function loadExcludeList() {
+            const c = document.getElementById('excludeList'); c.innerHTML = '';
+            fullAccountsCache.forEach((acc, idx) => {
+                const d = document.createElement('div');
+                d.className = 'glass-panel';
+                d.style.padding = '8px'; d.style.display = 'flex'; d.style.alignItems = 'center'; d.style.gap = '8px';
+                d.innerHTML = `
+                    <input type="checkbox" ${acc.exclude_from_batch_refresh ? 'checked' : ''} onchange="toggleExclude(${acc.id}, this.checked)">
+                    <span style="font-size:12px; overflow:hidden; text-overflow:ellipsis;">${acc.email}</span>
+                `;
+                c.appendChild(d);
+            });
+        }
+
         function viewDetail(id) {
-            const acc = accountsCache.find(a => a.id == id);
-            let html = '';
+            const acc = accountsCache.find(a => a.id === id);
+            if (!acc) return;
+            const d = document.getElementById('detailContent');
+            let h = '';
+            const row = (k, v) => `<div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.05);padding:8px 0;font-size:13px;"><span style="color:var(--text-muted)">${k}</span><span style="font-family:var(--font-mono);text-align:right;word-break:break-all">${v}</span></div>`;
 
-            const detailMap = {
-                'ID': acc.id,
-                'Email': acc.email || 'N/A',
-                'Team ID': acc.team_id,
-                'CSESIDX': acc.csesidx,
-                'User Agent': acc.user_agent,
-                '状态': acc.available ? (acc.refresh_in_progress ? '更新中' : '可用') : '禁用',
-                '注册时间': acc.created_at ? new Date(acc.created_at).toLocaleString() : '-',
-                '最后更新': acc.updated_at ? new Date(acc.updated_at).toLocaleString() : '-',
-                '生命周期剩余': `<span style="color:var(--info); font-weight:bold;">${formatDuration(acc.lifetime_remaining)}</span>`,
-                'JWT缓存': acc.has_jwt ? '是' : '否'
-            };
+            h += row('ID', acc.id);
+            h += row('Email', acc.email);
+            h += row('Session REQ', acc.request_count);
+            h += row('Status', acc.available ? 'Active' : 'Disabled');
+            h += row('Last Updated', acc.updated_at);
+            h += row('Retry Count', acc.refresh_retry_count);
+            h += row('Exclude Update', acc.exclude_from_batch_refresh ? 'Yes' : 'No');
 
-            if (acc.cooldown_remaining > 0) {
-                detailMap['冷却剩余'] = formatTime(acc.cooldown_remaining);
-                detailMap['冷却原因'] = acc.cooldown_reason;
-            }
-
-            for (const [key, val] of Object.entries(detailMap)) {
-                html += `
-                <div class="detail-row">
-                    <span>${key}</span>
-                    <span>${val}</span>
-                </div>`;
-            }
-
-            document.getElementById('detailContent').innerHTML = html;
+            d.innerHTML = h;
             openModal('detailModal');
         }
 
-        /* Settings Config */
-        async function exportConfig() {
-            const res = await apiCall('/api/accounts/export');
-            const d = await res.json();
-            document.getElementById('configJson').value = JSON.stringify(d, null, 2);
-            showToast('配置已加载至文本框', 'success');
-        }
-
-        async function importConfig() {
-            try {
-                const val = document.getElementById('configJson').value;
-                const json = JSON.parse(val);
-                const accounts = json.accounts || json;
-                await apiCall('/api/accounts/import', { method: 'POST', body: JSON.stringify({ accounts }) });
-                showToast('导入成功', 'success');
-                loadAccounts(1);
-            } catch (e) { showToast('JSON 格式错误', 'error'); }
-        }
-
-        function refreshConfig() { exportConfig(); }
-
-        /* Helpers */
-        function switchTab(id) {
+        function switchTab(t) {
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelector(`button[onclick="switchTab('${id}')"]`).classList.add('active');
+            document.getElementById(t).classList.add('active');
+            // dirty way to hilight active tab button
+            const btns = document.querySelectorAll('.tab-btn');
+            if (t === 'accounts') btns[0].classList.add('active'); else btns[1].classList.add('active');
+
+            if (t === 'settings') syncConfigDisplay();
         }
 
         function openModal(id) { document.getElementById(id).classList.add('open'); }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
         function showToast(msg, type) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = `toast toast-${type} show`;
+            const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast toast-${type} show`;
             setTimeout(() => t.classList.remove('show'), 3000);
-        }
-
-        function renderModelsBox() {
-            const ms = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-pro-preview", "banana-pro"];
-            const c = document.getElementById('modelsList');
-            ms.forEach(m => {
-                const b = document.createElement('span');
-                b.className = 'badge badge-success';
-                b.textContent = m;
-                c.appendChild(b);
-            });
         }
     </script>
 </body>
