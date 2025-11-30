@@ -836,6 +836,9 @@
                             <button class="btn btn-info btn-sm" onclick="refreshAll()">
                                 🔄 全部刷新
                             </button>
+                            <button class="btn btn-danger btn-sm" onclick="stopRefresh()">
+                                🛑 强制停止
+                            </button>
                         </div>
                     </div>
 
@@ -1388,6 +1391,13 @@
 
         async function refreshInvalid() {
             const res = await apiCall('/api/accounts/refresh-all', { method: 'POST', body: JSON.stringify({ only_invalid: true }) });
+            const d = await res.json(); showToast(d.message, 'success');
+            loadAccounts(currentPage);
+        }
+
+        async function stopRefresh() {
+            if (!confirm('确定要强制停止所有刷新任务吗？这将清空队列并禁用相关账号。')) return;
+            const res = await apiCall('/api/accounts/stop-refresh', { method: 'POST' });
             const d = await res.json(); showToast(d.message, 'success');
             loadAccounts(currentPage);
         }
